@@ -1,0 +1,31 @@
+version: "3.7"
+services:
+  spring:
+    build:
+      context: ./backend/spring
+      dockerfile: Dockerfile
+    container_name: spring
+    volumes:
+      - "./backend/spring/src:/build/src"
+      - "./backend/spring/target:/build/target:cached"
+    ports:
+      - "8082:8082"
+    environment:
+      - DATASOURCE_URL=jdbc:postgresql://spring-db:5432/docker
+      - SERVER_PORT=8082
+      - DATASOURCE_USERNAME=docker
+      - DATASOURCE_PASSWORD=docker
+      - POSTGRES_DB=docker
+    command: "mvn spring-boot:run"
+    depends_on:
+      - spring-db
+
+  spring-db:
+    container_name: spring-db
+    image: "postgres:12"
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=docker
+      - POSTGRES_PASSWORD=docker
+      - POSTGRES_DB=docker
