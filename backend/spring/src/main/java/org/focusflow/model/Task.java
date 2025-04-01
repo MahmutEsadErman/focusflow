@@ -1,12 +1,12 @@
 package org.focusflow.model;
-import lombok.Data;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 
-
+/**
+ * Represents a task in the system.
+ */
 @Entity
 @Table(name = "tasks")
 @Getter
@@ -40,23 +40,44 @@ public class Task {
     @JoinColumn(name = "team_id")
     private Team team;
 
-    // Helper Methods
+    /**
+     * Assigns a user to the task.
+     * @param user the user to assign
+     */
     public void assignUser(User user) {
         this.assignedUser = user;
     }
 
+    /**
+     * Unassigns the user from the task.
+     */
     public void unassignUser() {
         this.assignedUser = null;
     }
 
+    /**
+     * Changes the priority of the task.
+     * @param newPriority the new priority
+     */
     public void changePriority(TaskPriority newPriority) {
         this.priority = newPriority;
     }
 
+    /**
+     * Changes the status of the task.
+     * @param newStatus the new status
+     */
     public void changeStatus(TaskStatus newStatus) {
         this.status = newStatus;
     }
 
+    /**
+     * Updates the details of the task.
+     * @param title the new title
+     * @param shortDescription the new short description
+     * @param longDescription the new long description
+     * @param dueDate the new due date
+     */
     public void updateDetails(String title, String shortDescription, String longDescription, LocalDateTime dueDate) {
         this.title = title;
         this.shortDescription = shortDescription;
@@ -64,8 +85,11 @@ public class Task {
         this.dueDate = dueDate;
     }
 
+    /**
+     * Checks if the task is overdue.
+     * @return true if the task is overdue, false otherwise
+     */
     public boolean isOverdue() {
         return this.dueDate != null && this.dueDate.isBefore(LocalDateTime.now());
     }
 }
-
