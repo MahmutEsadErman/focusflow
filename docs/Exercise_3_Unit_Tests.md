@@ -2,8 +2,7 @@
 
 ## Introduction
 
-This document outlines the unit tests implemented for the FocusFlow application. Unit testing is a critical component of our development process, ensuring that individual components function correctly in isolation before being integrated into the larger system.
-
+This document outlines the unit tests implemented for the FocusFlow application.
 The FocusFlow application follows test-driven development principles, with comprehensive tests for each model class. These tests verify that:
 
 - Objects are created correctly with valid data
