@@ -8,8 +8,8 @@ This document outlines the technology choices made for implementing the FocusFlo
 
 | Component | Technology |
 |-----------|------------|
-| Frontend | React.js |
-| Backend | Django | 
+| Frontend | Vue.js     |
+| Backend | Springboot | 
 | Database | PostgreSQL | 
 
 Because team members are familier with this technologies, we chose them.
