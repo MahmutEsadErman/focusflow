@@ -1,5 +1,18 @@
 # Unit Test Documentation
 
+## Introduction
+
+This document outlines the unit tests implemented for the FocusFlow application. Unit testing is a critical component of our development process, ensuring that individual components function correctly in isolation before being integrated into the larger system.
+
+The FocusFlow application follows test-driven development principles, with comprehensive tests for each model class. These tests verify that:
+
+- Objects are created correctly with valid data
+- Methods produce expected outputs
+- Object relationships are properly maintained
+- Business logic functions as intended
+
+Our testing framework uses JUnit 5, allowing for clear test organization and powerful assertions. Each test class corresponds
+
 ## TaskTest Class
 
 ### Overview
@@ -11,7 +24,9 @@ The `TaskTest` class contains unit tests for the `Task` class, ensuring its meth
 - **Description:** Verifies `Task` creation with valid data.
 - **Assertions:**
     - Task object is not null.
-    - Title, short description, and long description match expected values.
+    - Title matches expected value.
+    - Short description matches expected value.
+    - Long description matches expected value.
 
 #### 2. testAssignUser
 - **Description:** Checks user assignment to a task.
@@ -36,7 +51,10 @@ The `TaskTest` class contains unit tests for the `Task` class, ensuring its meth
 #### 6. testUpdateDetails
 - **Description:** Checks if task details update correctly.
 - **Assertions:**
-    - Title, short description, long description, and due date update correctly.
+    - Title updates correctly.
+    - Short description updates correctly.
+    - Long description updates correctly.
+    - Due date updates correctly.
 
 #### 7. testIsOverdue
 - **Description:** Tests overdue task identification.
@@ -77,7 +95,8 @@ The `TeamTest` class ensures `Team` class functionalities work correctly.
 - **Description:** Verifies `Team` creation with valid data.
 - **Assertions:**
     - Team object is not null.
-    - Name and description match expected values.
+    - Name matches expected value.
+    - Description matches expected value.
 
 #### 2. testAddMember
 - **Description:** Ensures a member can be added to a team.
@@ -132,7 +151,10 @@ The `UserTest` class tests `User` class functionality.
 - **Description:** Verifies `User` creation with valid data.
 - **Assertions:**
     - User object is not null.
-    - Email, password, first name, and last name match expected values.
+    - Email matches expected value.
+    - Password matches expected value.
+    - First name matches expected value.
+    - Last name matches expected value.
 
 #### 2. testJoinTeam
 - **Description:** Tests user joining a team.
@@ -177,4 +199,3 @@ The `UserTest` class tests `User` class functionality.
 ### Setup and Teardown
 - **setUp():** Initializes `User`, `Team`, and `Task` (using mocks where necessary) before each test.
 - **tearDown():** Cleans up by nullifying the objects.
-
