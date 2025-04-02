@@ -19,3 +19,4 @@ Our team members are:
 | Ahmad Alhelal |
 | Mahmut Esad Erman| 
 | Necmettin Bera Çalık |
+| Nicolai Glock |
