@@ -71,7 +71,7 @@
 
 
 # Retrospective
-
+The review helped us catch issues early and align as a team. It helped us to see, even if the code is running well, there could be logical errors or implementations which not mach to the requirements of the customer . It’s a good method for improving code quality and clarifying requirements. If more people make the review more opinions and aspects come through, which improve the whole process. We’d use it mainly for critical code, requirement validation, and before major releases to ensure shared understanding and reduce errors.
 # Static Code Analysis
 
 ## Chosen Tools
