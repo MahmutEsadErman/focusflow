@@ -78,20 +78,40 @@ The review helped us catch issues early and align as a team. It helped us to see
 
 ## Chosen Tools
 
-### 1- [Tool]
+### 1- PMD
 - #### Purpose
-- #### Justification
-- [Integrate the selected tools into the project. Document the steps you took to set up and configure
-   the tools. ]
-- [Evaluate the impact of these tools on the project. Do you think they are useful for improving code
-  quality and catching issues early, or do they potentially slow down the development process?
-  Provide your reasoning. ]
+  To automatically detect coding issues such as unused variables, empty blocks, and code duplication during development and ensure code quality by enforcing predefined rules.
 
-### 2- [Tool]
-- #### Purpose
 - #### Justification
-- [Integrate the selected tools into the project. Document the steps you took to set up and configure
-  the tools. ]
-- [Evaluate the impact of these tools on the project. Do you think they are useful for improving code
-  quality and catching issues early, or do they potentially slow down the development process?
-  Provide your reasoning. ]
+  It supports consistent coding standards and helps catch issues before code reviews.
+
+- #### Integration & Setup Steps:
+  1. Open IntelliJ IDEA.
+  2. Go to *Settings > Plugins*.
+  3. Search and install “PMD Plugin”.
+  4. Restart IntelliJ.
+  5. Configure ruleset if needed.
+  6. Run PMD from the Tools menu on the project.
+
+- #### Impact Evaluation:  
+  Useful for early detection of issues and enforcing clean code. Doesn’t slow development since it runs inside IntelliJ.
+
+### 2- [SpotBugs Plugin]
+
+- #### Purpose
+  To perform static analysis of Java bytecode within IntelliJ IDEA, identifying potential bugs and coding issues.
+- 
+- #### Justification
+  SpotBugs detects a wide range of bug patterns, helping maintain high code quality and reliability.
+
+- #### Integration & Setup Steps:
+  1. Open IntelliJ IDEA.
+  2. Navigate to *Settings > Plugins*.
+  3. Search for "SpotBugs" and install the plugin.
+  4. Restart IntelliJ IDEA to activate the plugin.
+  5. Run SpotBugs analysis via the Tools menu on your project.
+
+- **Impact Evaluation**:
+  SpotBugs aids in early detection of potential bugs, enhancing code quality. Integrated within IntelliJ IDEA, it operates efficiently without significantly impacting development speed.
+- #### Impact Evaluation:  
+    SpotBugs improves code reliability by detecting issues like null pointer dereferences, infinite recursive loops, bad uses of Java libraries, and deadlocks. Integrated into IntelliJ, it runs quickly with minimal disruption. It helps catch serious bugs early, supporting cleaner and more stable code.
