@@ -1,4 +1,4 @@
-# Master Review Template
+# Review
 
 [The main reason of the master review document is to provide a comprehensive overview of the project and the review process. It should include all the information about the project, the review process, the participants, the review objects, the reference documents, the checklist, and the additional notes.]
 
@@ -39,36 +39,29 @@
 
 ## Review Decision
 
-- [Provide information about the review decision, including the decision made and the justification for the decision. Is the review approved or not? If not, what are the reasons for the rejection?]
-- [Is a follow-up review required? If yes, what is the next step?]
-- [Is a re-inspection required? If yes, what is the next step?]
+- **Review Decision:** The review is not approved. The justification for this decision is based on the identified major issues, including missing methods for task filtering, creation, modification, and status handling in the `Task` class, as well as the lack of error handling and documentation clarity in certain areas. These issues need to be addressed to meet the project requirements and quality standards.
+
+- **Follow-up Review:** Yes, a follow-up review is required. The next step is to implement the missing methods, improve error handling, and enhance documentation as per the findings. Once these changes are made, the updated code should be submitted for re-evaluation.
+
+- **Re-inspection:** Yes, a re-inspection is required. After the follow-up review, the updated code will be re-inspected to ensure all identified issues have been resolved and the code meets the required standards.
 
 ## Date of Review
 
 - **Date:** 03/04/2025
 
-## Additional notes
-
-- [Provide additional notes if required]
-
-
 # List of Findings (WIP) (We will do tomorrow)
 
 [The list of findings is a table that contains all the findings found during the review. It should include the following columns: No., Review Object, Finding Location, Description, Checklist/Scenario (found using checklist or a use case scenario), Found By, Severity Level (Major/Minor), Comments, Status (Open/Resolved/Rejected/Deferred/Duplicate), and Responsible Person.]
 
-| No. | Review Object        | Finding Location                       | Description                                                                                   | Checklist/Scenario        | Found By   | Severity Level | Comments                                                                                        | Status                                      | Responsible Person   |
-|-----|----------------------|----------------------------------------|-----------------------------------------------------------------------------------------------|---------------------------|------------|----------------|-------------------------------------------------------------------------------------------------|---------------------------------------------|----------------------|
-| 1   | [Specifications]     | [3.4 Dashboard]                        | [In the introductory text we couldn't find anything related to this. So this can be unnecessary for the customer.] | [Scenario ]               | [Alhelal]  | [Minor]        | [It is not written in introductory text. That's why it can be an unnecessary feature. (YAGNI) ] | [Open]                                      | [Ahmad Alhelal]      |
-| 4   | [Specifications]     | [2.2 User Classes and Characteristics] |                   | [Checklist]      | [Ahmad Alhelal] | [Major]  | [there is no error handling]                                                                                      | [Open] | [Responsible Person] |
-| 5   | [Specifications]     | [Location]                             | [Description]                                                                                 | [Checklist/Scenario]      | [Found By] | [Major/Minor]  | [Comments]                                                                                      | [Open/Resolved/Rejected/Deferred/Duplicate] | [Responsible Person] |
-| 2   | [Task.java]          | [Task Class]                           | [The methods for task filter are missing.]                                                    | [Functionality and Logic] | [Glock]    | [Major]        | [...]                                                                                           | [Open]                                      | [Mahmut Esad Erman]  |
-| 3   | [Task.java]          | [Task Class]                           | [The methods for Create tasks,Modify tasks,View tasks
- are missing.
-]                                                                                 | [Checklist]      | [Ahmad Alhelal] | [Major]  | [should be implemented]                                                                                      | [Open] | [Glock] |
-| 4   | [Task.java] | [Task Class]                             | [Description]                                                                                 | [Checklist]      | [Ahmad Alhelal] | [Major]  | [The methods for knowing the status of the task(Open,Pending,In Review,Closed) are missing.]                                                                                      | [Open] | [Mahmut Esad Erman] |
-| 5   | [over all] | [over all]                             | [there is no error handling]                                                                                 | [Checklist]      | [Ahmad Alhelal] | [Major]  | [make try..catchs for the potential error]                                                                                      | [Open] | [Necmettin Bera Çalık] |
-| 6   | [Tag] | [Tag.java]                             | [it is not clear what tag class does and it is not explained in Docu]                                                                                 | [Checklist-Documentation]      | [[Ahmad Alhelal] | [Major]  | [we should explain what everything do]                                                                                      | [Open] | [Mahmut Esad Erman] |
-| 7   | [TagTest] | [TagTest.java]                             | [there no closing for the testcase with tearDown]                                                                                  | [Checklist-Compliance with Standards]      | [Ahmad Alhelal] | [Major]  | [add tearDown function to clean up, delete, or reset objects/resources]                                                                                      | [Open] | [Glock] |
+| No. | Review Object    | Finding Location                       | Description                                                                                                        | Checklist/Scenario                    | Found By     | Severity Level | Comments                                                                                        | Status   | Responsible Person     |
+|-----|------------------|----------------------------------------|--------------------------------------------------------------------------------------------------------------------|---------------------------------------|--------------|----------------|-------------------------------------------------------------------------------------------------|----------|------------------------|
+| 1   | [Specifications] | [3.4 Dashboard]                        | [In the introductory text we couldn't find anything related to this. So this can be unnecessary for the customer.] | [Scenario ]                           | [Alhelal]    | [Minor]        | [It is not written in introductory text. That's why it can be an unnecessary feature. (YAGNI) ] | [Open]   | [Ahmad Alhelal]        |
+| 2   | [Task.java]      | [Task Class]                           | [The methods for task filter are missing.]                                                                         | [Functionality and Logic]             | [Glock]      | [Major]        | [...]                                                                                           | [Open]   | [Mahmut Esad Erman]    |
+| 3   | [Task.java]      | [Task Class]                           | [The methods for Create tasks,Modify tasks,View tasks are missing.]                                                | [Checklist]                           | [Alhelal]    | [Major]        | [should be implemented]                                                                         | [Open]   | [Glock]                |
+| 4   | [Task.java]      | [Task Class]                           | [The methods for knowing the status of the task]                                                                   | [Checklist]                           | [Alhelal]    | [Major]        | [The methods for knowing the status of the task(Open,Pending,In Review,Closed) are missing.]    | [Open]   | [Mahmut Esad Erman]    |
+| 5   | [over all]       | [over all]                             | [there is no error handling]                                                                                       | [Checklist]                           | [Alhelal]    | [Major]        | [make try..catchs for the potential error]                                                      | [Open]   | [Necmettin Bera Çalık] |
+| 6   | [Tag]            | [Tag.java]                             | [it is not clear what tag class does and it is not explained in Docu]                                              | [Checklist-Documentation]             | [[Alhelal]   | [Major]        | [we should explain what everything do]                                                          | [Open]   | [Mahmut Esad Erman]    |
+| 7   | [TagTest]        | [TagTest.java]                         | [there no closing for the testcase with tearDown]                                                                  | [Checklist-Compliance with Standards] | [Alhelal]    | [Major]        | [add tearDown function to clean up, delete, or reset objects/resources]                         | [Open]   | [Glock]                |
 
 
 
@@ -96,7 +89,7 @@ The review helped us catch issues early and align as a team. It helped us to see
 - #### Impact Evaluation:  
   Useful for early detection of issues and enforcing clean code. Doesn’t slow development since it runs inside IntelliJ.
 
-### 2- [SpotBugs Plugin]
+### 2- SpotBugs Plugin
 
 - #### Purpose
   To perform static analysis of Java bytecode within IntelliJ IDEA, identifying potential bugs and coding issues.
@@ -112,6 +105,6 @@ The review helped us catch issues early and align as a team. It helped us to see
   5. Run SpotBugs analysis via the Tools menu on your project.
 
 - **Impact Evaluation**:
-  SpotBugs aids in early detection of potential bugs, enhancing code quality. Integrated within IntelliJ IDEA, it operates efficiently without significantly impacting development speed.
+  SpotBugs aids in early detection of potential bugs, enhancing code quality. Integrated within IntelliJ IDEA, it operates efficiently without significantly impacting development speed.
 - #### Impact Evaluation:  
     SpotBugs improves code reliability by detecting issues like null pointer dereferences, infinite recursive loops, bad uses of Java libraries, and deadlocks. Integrated into IntelliJ, it runs quickly with minimal disruption. It helps catch serious bugs early, supporting cleaner and more stable code.
