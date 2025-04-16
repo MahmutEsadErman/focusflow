@@ -1,4 +1,4 @@
-# FocusFlow Password Validation Test Design
+# FocusFlow Test Design
 
 ## Exercise 5.1: Black-Box Testing Techniques
 
@@ -139,3 +139,63 @@ The decision table represents all possible combinations of the four conditions. 
 | DT-14   | "ABCDE"       | Rule 14      | Reject           | Password has 5 characters (invalid length < 10), has uppercase letters, but lacks lowercase letters and special characters. Fails on length, lowercase, and special character requirements. |
 | DT-15   | "1234567890"  | Rule 15      | Reject           | Password has 10 characters (valid length), but lacks uppercase letters, lowercase letters, and special characters. Only contains numbers, failing all character type requirements. |
 | DT-16   | "123"         | Rule 16      | Reject           | Password has 3 characters (invalid length < 10), and lacks uppercase letters, lowercase letters, and special characters. Fails all requirements. |
+
+## Exercise 5.2: White-Box Testing Techniques
+
+This part presents a whitebox test case analysis for the `createTask` method in the `TaskServiceImpl.java` file, with examples to illustrate each test case.
+
+---
+
+## Valid Test Cases
+
+| Test ID | Description | Example | Expected Outcome |
+|--------|-------------|---------|------------------|
+| **TC1** | All valid inputs, only `assigneeId` set | `title="Fix Bug"`, `shortDescription="Fix login issue"`, `dueDate=now+2d`, `priority=HIGH`, `assigneeId=UUID1`, `teamId=null`, `createdById=UUID2` | Task created |
+| **TC2** | All valid inputs, only `teamId` set | Same as TC1, but `assigneeId=null`, `teamId=UUID3` | Task created |
+| **TC3** | Valid inputs, `tagIds=null` | Same as TC1, `tagIds=null` | Task created without tags |
+| **TC4** | Valid inputs, empty tag set | Same as TC1, `tagIds=emptySet()` | Task created without tags |
+| **TC5** | Valid inputs, multiple valid tag IDs | `tagIds={UUID4, UUID5}` | Task created with 2 tags |
+
+---
+
+## Invalid Test Cases: Missing Required Fields
+
+| Test ID | Description | Example | Expected Error |
+|--------|-------------|---------|----------------|
+| **TC6** | `title` is null | `title=null`, rest valid | `"Title is required"` |
+| **TC7** | `shortDescription` is null | `shortDescription=null`, rest valid | `"Short description is required"` |
+| **TC8** | `dueDate` is null | `dueDate=null`, rest valid | `"Due date is required"` |
+| **TC9** | `priority` is null | `priority=null`, rest valid | `"Priority is required"` |
+| **TC10** | `createdById` is null | `createdById=null`, rest valid | `"Created by user ID is required"` |
+
+---
+
+## Invalid Test Cases: Field Constraints
+
+| Test ID | Description | Example | Expected Error |
+|--------|-------------|---------|----------------|
+| **TC11** | `title.length > 100` | `title="a".repeat(101)` | `"Title must be between 1 and 100 characters"` |
+| **TC12** | `title.length == 0` | `title=""` | `"Title must be between 1 and 100 characters"` |
+| **TC13** | `shortDescription.length > 200` | `shortDescription="x".repeat(201)` | `"Short description must be at most 200 characters"` |
+| **TC14** | `dueDate` in the past | `dueDate=now.minusDays(1)` | `"Due date must be in the future"` |
+
+---
+
+## Invalid Test Cases: Assignment Conflicts
+
+| Test ID | Description | Example | Expected Error |
+|--------|-------------|---------|----------------|
+| **TC15** | Both `assigneeId` and `teamId` set | `assigneeId=UUID1`, `teamId=UUID2` | `"A task cannot be assigned to both a user and a team simultaneously"` |
+
+---
+
+## Invalid Test Cases: Entity Lookups
+
+| Test ID | Description | Example | Expected Error |
+|--------|-------------|---------|----------------|
+| **TC16** | `createdById` does not exist | `createdById=nonexistentUUID` | `"Created by user not found"` |
+| **TC17** | `assigneeId` does not exist | `assigneeId=nonexistentUUID` | `"Assignee not found"` |
+| **TC18** | `teamId` does not exist | `teamId=nonexistentUUID` | `"Team not found"` |
+| **TC19** | `tagIds` contains nonexistent ID | `tagIds={nonexistentUUID}` | `"Tag with ID <uuid> not found"` |
+
+---
