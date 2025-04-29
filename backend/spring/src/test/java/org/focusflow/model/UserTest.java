@@ -1,6 +1,5 @@
 package org.focusflow.model;
 
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -8,7 +7,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
 
 /**
  * Unit tests for the User class.
@@ -18,25 +16,32 @@ public class UserTest {
     private User user;
     private Team team;
     private Task task;
+    private Role userRole;
+    private Role adminRole;
 
     /**
      * Sets up the test environment before each test.
      */
     @BeforeEach
     public void setUp() {
-        task = mock(Task.class);
-        team = mock(Team.class);
+        task = new Task();
+        task.setId(1L);
+        task.setTitle("Test Task");
+        
+        team = new Team();
+        team.setId(1L);
+        team.setName("Test Team");
+        
+        userRole = new Role("USER");
+        adminRole = new Role("ADMIN");
+        
         user = new User();
-    }
-
-    /**
-     * Cleans up the test environment after each test.
-     */
-    @AfterEach
-    public void tearDown() {
-        task = null;
-        team = null;
-        user = null;
+        user.setId(1L);
+        user.setEmail("test@example.com");
+        user.setPassword("password123");
+        user.setFirstName("John");
+        user.setLastName("Doe");
+        user.getRoles().add(userRole); // Add default USER role
     }
 
     /**
@@ -44,12 +49,12 @@ public class UserTest {
      */
     @Test
     public void testUserCreationWithValidData() {
-        User newUser = new User(1L, "test@example.com", "password123", "John", "Doe", null, null, null);
-        assertNotNull(newUser);
-        assertEquals("test@example.com", newUser.getEmail());
-        assertEquals("password123", newUser.getPassword());
-        assertEquals("John", newUser.getFirstName());
-        assertEquals("Doe", newUser.getLastName());
+        assertNotNull(user);
+        assertEquals(1L, user.getId());
+        assertEquals("test@example.com", user.getEmail());
+        assertEquals("password123", user.getPassword());
+        assertEquals("John", user.getFirstName());
+        assertEquals("Doe", user.getLastName());
     }
 
     /**
@@ -59,7 +64,7 @@ public class UserTest {
     public void testJoinTeam() {
         user.joinTeam(team);
         assertEquals(team, user.getTeam());
-        verify(team).addMember(user);
+        assertTrue(team.getMembers().contains(user));
     }
 
     /**
@@ -70,7 +75,7 @@ public class UserTest {
         user.joinTeam(team);
         user.leaveTeam();
         assertNull(user.getTeam());
-        verify(team).removeMember(user);
+        assertFalse(team.getMembers().contains(user));
     }
 
     /**
@@ -89,7 +94,7 @@ public class UserTest {
     @Test
     public void testAssignTask() {
         user.assignTask(task);
-        verify(task).setAssignedUser(user);
+        assertEquals(user, task.getAssignedUser());
     }
 
     /**
@@ -97,9 +102,9 @@ public class UserTest {
      */
     @Test
     public void testUnassignTask() {
-        when(task.getAssignedUser()).thenReturn(user);
+        user.assignTask(task);
         user.unassignTask(task);
-        verify(task).setAssignedUser(null);
+        assertNull(task.getAssignedUser());
     }
 
     /**
@@ -107,10 +112,9 @@ public class UserTest {
      */
     @Test
     public void testIsAssignedToTask() {
-        when(task.getAssignedUser()).thenReturn(user);
-        assertTrue(user.isAssignedToTask(task));
-        when(task.getAssignedUser()).thenReturn(null);
         assertFalse(user.isAssignedToTask(task));
+        user.assignTask(task);
+        assertTrue(user.isAssignedToTask(task));
     }
 
     /**
@@ -118,17 +122,80 @@ public class UserTest {
      */
     @Test
     public void testGetAssignedTasks() {
-        Task task1 = mock(Task.class);
-        Task task2 = mock(Task.class);
+        Task task1 = new Task();
+        task1.setId(1L);
+        task1.setTitle("Task 1");
+        
+        Task task2 = new Task();
+        task2.setId(2L);
+        task2.setTitle("Task 2");
+        
         Set<Task> allTasks = new HashSet<>();
         allTasks.add(task1);
         allTasks.add(task2);
 
-        when(task1.getAssignedUser()).thenReturn(user);
-        when(task2.getAssignedUser()).thenReturn(null);
-
+        user.assignTask(task1);
+        
         Set<Task> userTasks = user.getAssignedTasks(allTasks);
         assertEquals(1, userTasks.size());
         assertTrue(userTasks.contains(task1));
+        assertFalse(userTasks.contains(task2));
+    }
+
+    /**
+     * Tests adding a role to the user.
+     */
+    @Test
+    public void testAddRole() {
+        assertTrue(user.getRoles().contains(userRole));
+        assertFalse(user.getRoles().contains(adminRole));
+        
+        user.getRoles().add(adminRole);
+        
+        assertTrue(user.getRoles().contains(userRole));
+        assertTrue(user.getRoles().contains(adminRole));
+        assertEquals(2, user.getRoles().size());
+    }
+
+    /**
+     * Tests removing a role from the user.
+     */
+    @Test
+    public void testRemoveRole() {
+        user.getRoles().add(adminRole);
+        assertTrue(user.getRoles().contains(adminRole));
+        
+        user.getRoles().remove(adminRole);
+        
+        assertFalse(user.getRoles().contains(adminRole));
+        assertTrue(user.getRoles().contains(userRole));
+        assertEquals(1, user.getRoles().size());
+    }
+
+    /**
+     * Tests if the user has a specific role.
+     */
+    @Test
+    public void testHasRole() {
+        assertTrue(user.getRoles().stream().anyMatch(role -> role.getName().equals("USER")));
+        assertFalse(user.getRoles().stream().anyMatch(role -> role.getName().equals("ADMIN")));
+        
+        user.getRoles().add(adminRole);
+        
+        assertTrue(user.getRoles().stream().anyMatch(role -> role.getName().equals("USER")));
+        assertTrue(user.getRoles().stream().anyMatch(role -> role.getName().equals("ADMIN")));
+    }
+
+
+    /**
+     * Tests that removing a non-existent role does not affect existing roles.
+     */
+    @Test
+    public void testRemoveNonExistentRole() {
+        Role nonExistentRole = new Role("NON_EXISTENT");
+        user.getRoles().remove(nonExistentRole);
+        
+        assertTrue(user.getRoles().contains(userRole));
+        assertEquals(1, user.getRoles().size());
     }
 }
