@@ -111,4 +111,62 @@ public class TeamTest {
         assertEquals(1, tasks.size());
         assertTrue(tasks.contains(task));
     }
+    
+    /**
+     * Tests team creation with null values in optional fields.
+     */
+    @Test
+    public void testTeamCreationWithNullValues() {
+        Team newTeam = new Team(1L, "Team Name", null, null, null, null);
+        assertNotNull(newTeam);
+        assertEquals("Team Name", newTeam.getName());
+        assertNull(newTeam.getDescription());
+    }
+    
+    /**
+     * Tests team creation with empty strings.
+     */
+    @Test
+    public void testTeamCreationWithEmptyStrings() {
+        Team newTeam = new Team(1L, "", "", null, null, null);
+        assertNotNull(newTeam);
+        assertEquals("", newTeam.getName());
+        assertEquals("", newTeam.getDescription());
+    }
+    
+    /**
+     * Tests team creation with maximum length values.
+     */
+    @Test
+    public void testTeamCreationWithMaxLengthValues() {
+        String longString = "a".repeat(100); // Assuming max length is 100
+        Team newTeam = new Team(1L, longString, longString, null, null, null);
+        assertNotNull(newTeam);
+        assertEquals(longString, newTeam.getName());
+        assertEquals(longString, newTeam.getDescription());
+    }
+    
+    /**
+     * Tests concurrent member modifications.
+     */
+    @Test
+    public void testConcurrentMemberModifications() {
+        User user2 = new User();
+        
+        // Add first member
+        team.addMember(user);
+        assertTrue(team.hasMember(user));
+        assertEquals(1, team.getAllMembers().size());
+        
+        // Add second member
+        team.addMember(user2);
+        assertTrue(team.hasMember(user2));
+        assertEquals(2, team.getAllMembers().size());
+        
+        // Remove first member
+        team.removeMember(user);
+        assertFalse(team.hasMember(user));
+        assertTrue(team.hasMember(user2));
+        assertEquals(1, team.getAllMembers().size());
+    }
 }

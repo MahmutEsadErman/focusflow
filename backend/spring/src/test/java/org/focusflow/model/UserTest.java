@@ -186,7 +186,6 @@ public class UserTest {
         assertTrue(user.getRoles().stream().anyMatch(role -> role.getName().equals("ADMIN")));
     }
 
-
     /**
      * Tests that removing a non-existent role does not affect existing roles.
      */
@@ -198,4 +197,113 @@ public class UserTest {
         assertTrue(user.getRoles().contains(userRole));
         assertEquals(1, user.getRoles().size());
     }
+
+    /**
+     * Tests user creation with null values in optional fields.
+     */
+    @Test
+    public void testUserCreationWithNullValues() {
+        User newUser = new User();
+        newUser.setId(1L);
+        newUser.setEmail("test@example.com");
+        // firstName and lastName are null
+        
+        assertNotNull(newUser);
+        assertEquals("test@example.com", newUser.getEmail());
+        assertNull(newUser.getFirstName());
+        assertNull(newUser.getLastName());
+    }
+
+    /**
+     * Tests user creation with empty strings.
+     */
+    @Test
+    public void testUserCreationWithEmptyStrings() {
+        User newUser = new User();
+        newUser.setId(1L);
+        newUser.setEmail("test@example.com");
+        newUser.setFirstName("");
+        newUser.setLastName("");
+        
+        assertNotNull(newUser);
+        assertEquals("test@example.com", newUser.getEmail());
+        assertEquals("", newUser.getFirstName());
+        assertEquals("", newUser.getLastName());
+    }
+
+    /**
+     * Tests user creation with maximum length values.
+     */
+    @Test
+    public void testUserCreationWithMaxLengthValues() {
+        String longString = "a".repeat(50); // Max length for name fields
+        
+        User newUser = new User();
+        newUser.setId(1L);
+        newUser.setEmail("test@example.com");
+        newUser.setFirstName(longString);
+        newUser.setLastName(longString);
+        
+        assertNotNull(newUser);
+        assertEquals(longString, newUser.getFirstName());
+        assertEquals(longString, newUser.getLastName());
+    }
+
+    /**
+     * Tests multiple role assignments.
+     */
+    @Test
+    public void testMultipleRoleAssignments() {
+        Role developerRole = new Role("DEVELOPER");
+        Role testerRole = new Role("TESTER");
+        
+        user.getRoles().add(developerRole);
+        user.getRoles().add(testerRole);
+        
+        assertTrue(user.getRoles().contains(userRole));
+        assertTrue(user.getRoles().contains(developerRole));
+        assertTrue(user.getRoles().contains(testerRole));
+        assertEquals(3, user.getRoles().size());
+    }
+
+    /**
+     * Tests task priority handling.
+     */
+    @Test
+    public void testTaskPriorityHandling() {
+        Task highPriorityTask = new Task();
+        highPriorityTask.setId(2L);
+        highPriorityTask.setTitle("High Priority Task");
+        highPriorityTask.setPriority(TaskPriority.HIGH);
+        
+        Task lowPriorityTask = new Task();
+        lowPriorityTask.setId(3L);
+        lowPriorityTask.setTitle("Low Priority Task");
+        lowPriorityTask.setPriority(TaskPriority.LOW);
+        
+        user.assignTask(highPriorityTask);
+        user.assignTask(lowPriorityTask);
+        
+        Set<Task> userTasks = user.getAssignedTasks(Set.of(highPriorityTask, lowPriorityTask));
+        assertEquals(2, userTasks.size());
+        assertTrue(userTasks.contains(highPriorityTask));
+        assertTrue(userTasks.contains(lowPriorityTask));
+    }
+
+    /**
+     * Tests task deadline management.
+     */
+    @Test
+    public void testTaskDeadlineManagement() {
+        Task taskWithDeadline = new Task();
+        taskWithDeadline.setId(4L);
+        taskWithDeadline.setTitle("Task with Deadline");
+        taskWithDeadline.setDueDate(java.time.LocalDateTime.now().plusDays(7));
+        
+        user.assignTask(taskWithDeadline);
+        
+        assertTrue(user.isAssignedToTask(taskWithDeadline));
+        assertNotNull(taskWithDeadline.getDueDate());
+    }
+
 }

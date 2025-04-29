@@ -138,4 +138,44 @@ public class TaskTest {
         task.changePriority(TaskPriority.HIGH);
         assertEquals(TaskPriority.HIGH, task.getPriority());
     }
+    
+    /**
+     * Tests task creation with null values in optional fields.
+     */
+    @Test
+    public void testTaskCreationWithNullValues() {
+        Task newTask = new Task(1L, "Title", null, null, null, null, null, null, null);
+        assertNotNull(newTask);
+        assertEquals("Title", newTask.getTitle());
+        assertNull(newTask.getShortDescription());
+        assertNull(newTask.getLongDescription());
+        assertNull(newTask.getDueDate());
+        assertNull(newTask.getPriority());
+        assertNull(newTask.getStatus());
+    }
+    
+    /**
+     * Tests task creation with empty strings.
+     */
+    @Test
+    public void testTaskCreationWithEmptyStrings() {
+        Task newTask = new Task(1L, "", "", "", LocalDateTime.now().plusDays(1), TaskPriority.MEDIUM, TaskStatus.PENDING, null, null);
+        assertNotNull(newTask);
+        assertEquals("", newTask.getTitle());
+        assertEquals("", newTask.getShortDescription());
+        assertEquals("", newTask.getLongDescription());
+    }
+    
+    /**
+     * Tests task creation with maximum length values.
+     */
+    @Test
+    public void testTaskCreationWithMaxLengthValues() {
+        String longString = "a".repeat(200); // Assuming max length is 200
+        Task newTask = new Task(1L, longString, longString, longString, LocalDateTime.now().plusDays(1), TaskPriority.MEDIUM, TaskStatus.PENDING, null, null);
+        assertNotNull(newTask);
+        assertEquals(longString, newTask.getTitle());
+        assertEquals(longString, newTask.getShortDescription());
+        assertEquals(longString, newTask.getLongDescription());
+    }
 }

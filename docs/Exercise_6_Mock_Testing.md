@@ -1,4 +1,52 @@
-## 6.2 UserService Testing Implementation
+# FocusFlow Mock Testing
+
+## 6.1 Unit Testing of Models
+
+We've analyzed the current test implementations for TaskTest, TeamTest, and UserTest using test design techniques from exercise five. Here's the approach:
+
+### Analysis Methodology
+
+Our analysis of the current test implementation followed a systematic approach to identify gaps in test coverage:
+
+1. **Code Review**: We performed a detailed review of existing test cases for each component (User, Team, Task) to understand current coverage.
+
+2. **Boundary Analysis**: We examined edge cases and boundary conditions that could potentially cause issues but weren't being tested.
+
+3. **Use Case Mapping**: We mapped out all possible user interactions and system behaviors to identify untested scenarios.
+
+4. **Error Path Analysis**: We analyzed error handling paths and exception cases that needed additional test coverage.
+
+Through this comprehensive analysis, we identified several missing edge cases and test scenarios that need to be addressed:
+
+### Findings and Missing Test Cases
+
+1. **UserTest Analysis**
+   
+   - **Missing Tests**:
+     - User creation with null values in optional fields
+     - User creation with empty strings
+     - User creation with maximum length values
+     - Multiple role assignments
+     - Task priority handling
+     - Task deadline management
+
+2. **TeamTest Analysis**
+
+   - **Missing Tests**:
+     - Team creation with null values
+     - Team creation with empty strings
+     - Team creation with maximum length values
+     - Concurrent member modifications
+
+3. **TaskTest Analysis**
+
+   - **Missing Tests**:
+     - Task creation with null values
+     - Task creation with empty strings
+     - Task creation with maximum length values
+
+
+## 6.2 Service Testing
 
 In this section, we implemented comprehensive testing for the UserService layer using Mockito. Here's what we accomplished:
 
