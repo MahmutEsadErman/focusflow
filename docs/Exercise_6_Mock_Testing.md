@@ -48,12 +48,10 @@ Through this comprehensive analysis, we identified several missing edge cases an
 
 ## 6.2 Service Testing
 
-In this section, we implemented comprehensive testing for the UserService layer using Mockito. Here's what we accomplished:
 
 1. **Service Layer Testing Setup**
    - Created UserService interface
    - Created UserServiceImpl to implement the interface
-   - Implemented UserRepository for data persistence
    - Set up mock testing environment with PasswordEncoder and UserRepository
 
 2. **Test Coverage Implementation**
@@ -92,5 +90,3 @@ In this section, we implemented comprehensive testing for the UserService layer 
    - Ensured data persistence operations
    - Validated business logic implementation
    - Confirmed proper interaction between service and repository layers
-
-The implementation demonstrates proper separation of concerns and comprehensive test coverage of the service layer functionality. 
