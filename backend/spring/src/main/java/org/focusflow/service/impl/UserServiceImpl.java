@@ -6,9 +6,20 @@ import org.focusflow.model.User;
 import org.focusflow.repository.UserRepository;
 import org.focusflow.service.UserService;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Service;
 
 import java.util.regex.Pattern;
+
+@Configuration
+class SecurityConfig {
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+}
 
 @Service
 public class UserServiceImpl implements UserService {
