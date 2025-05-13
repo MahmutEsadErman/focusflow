@@ -43,6 +43,9 @@ jobs:
           distribution: "temurin"
           cache: "maven"
           cache-dependency-path: "backend/spring/pom.xml"
+      - name: Set execute permission for mvnw
+        run: chmod +x ./mvnw
+        working-directory: backend/spring
       - name: Build with Maven
         working-directory: backend/spring
         run: |
