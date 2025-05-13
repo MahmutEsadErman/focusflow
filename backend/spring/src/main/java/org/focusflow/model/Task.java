@@ -1,8 +1,10 @@
 package org.focusflow.model;
+
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.function.BooleanSupplier;
 
 /**
  * Represents a task in the system.
@@ -114,6 +116,7 @@ public class Task {
 
     /**
      * Assigns a user to the task.
+     * 
      * @param user the user to assign
      */
     public void assignUser(User user) {
@@ -129,6 +132,7 @@ public class Task {
 
     /**
      * Changes the priority of the task.
+     * 
      * @param newPriority the new priority
      */
     public void changePriority(TaskPriority newPriority) {
@@ -137,6 +141,7 @@ public class Task {
 
     /**
      * Changes the status of the task.
+     * 
      * @param newStatus the new status
      */
     public void changeStatus(TaskStatus newStatus) {
@@ -145,10 +150,11 @@ public class Task {
 
     /**
      * Updates the details of the task.
-     * @param title the new title
+     * 
+     * @param title            the new title
      * @param shortDescription the new short description
-     * @param longDescription the new long description
-     * @param dueDate the new due date
+     * @param longDescription  the new long description
+     * @param dueDate          the new due date
      */
     public void updateDetails(String title, String shortDescription, String longDescription, LocalDateTime dueDate) {
         this.title = title;
@@ -159,9 +165,11 @@ public class Task {
 
     /**
      * Checks if the task is overdue.
+     * 
      * @return true if the task is overdue, false otherwise
      */
     public boolean isOverdue() {
         return this.dueDate != null && this.dueDate.isBefore(LocalDateTime.now());
     }
+
 }
