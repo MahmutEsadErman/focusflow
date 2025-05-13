@@ -25,6 +25,7 @@ jobs:
 
       - name: Set execute permission for mvnw
         run: chmod +x ./mvnw
+        working-directory: backend/spring
       - name: Run Tests
         working-directory: backend/spring
         run: |
