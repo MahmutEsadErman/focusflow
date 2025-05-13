@@ -13,10 +13,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       # 1st step: checkout code from git
-      - uses: actions/checkout@latest
+      - uses: actions/checkout@v4
       # 2nd step: setup Java environment
       - name: Set up JDK
-        uses: actions/setup-java@latest
+        uses: actions/setup-java@v4
         with:
           java-version: "21"
           distribution: "temurin"
