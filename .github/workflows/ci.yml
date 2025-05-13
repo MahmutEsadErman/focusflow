@@ -1,0 +1,45 @@
+# name of the CI workflow pipeline
+name: SWT CI Workflow
+
+# describe the trigger
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      # 1st step: checkout code from git
+      - uses: actions/checkout@v4
+      # 2nd step: setup Java environment
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          java-version: "21"
+          distribution: "temurin"
+          cache: "maven"
+          cache-dependency-path: "backend/pom.xml"
+      - name: Run Tests
+        working-directory: backend
+        run: |
+          ./mvnw test
+  build:
+    needs: test
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          java-version: "17"
+          distribution: "temurin"
+          cache: "maven"
+          cache-dependency-path: "backend/pom.xml"
+      - name: Build with Maven
+        working-directory: backend
+        run: |
+          ./mvnw clean verify package

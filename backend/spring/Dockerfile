@@ -3,8 +3,9 @@ FROM maven:3.9.8-eclipse-temurin-21 AS build
 RUN mkdir -p /workspace
 WORKDIR /workspace
 COPY pom.xml /workspace
+RUN mvn dependency:go-offline
 COPY src /workspace/src
-RUN mvn -f pom.xml -DskipTests clean package
+RUN mvn -f pom.xml clean package
 
 ### STAGE 2: Run ###
 FROM openjdk:21
