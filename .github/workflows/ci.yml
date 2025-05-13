@@ -25,7 +25,7 @@ jobs:
       - name: Run Tests
         working-directory: backend/spring
         run: |
-          ./mvn test
+          ./mvnw test
   build:
     needs: test
     runs-on: ubuntu-latest
@@ -42,4 +42,4 @@ jobs:
       - name: Build with Maven
         working-directory: backend/spring
         run: |
-          ./mvn clean verify package
+          ./mvnw clean verify package
