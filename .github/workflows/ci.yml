@@ -21,9 +21,9 @@ jobs:
           java-version: "21"
           distribution: "temurin"
           cache: "maven"
-          cache-dependency-path: "backend/pom.xml"
+          cache-dependency-path: "backend/spring/pom.xml"
       - name: Run Tests
-        working-directory: backend
+        working-directory: backend/spring
         run: |
           ./mvnw test
   build:
@@ -38,8 +38,8 @@ jobs:
           java-version: "17"
           distribution: "temurin"
           cache: "maven"
-          cache-dependency-path: "backend/pom.xml"
+          cache-dependency-path: "backend/spring/pom.xml"
       - name: Build with Maven
-        working-directory: backend
+        working-directory: backend/spring
         run: |
           ./mvnw clean verify package
