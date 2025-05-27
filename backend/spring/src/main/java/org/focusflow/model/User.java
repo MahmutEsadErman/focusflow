@@ -1,12 +1,15 @@
 package org.focusflow.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -34,6 +37,7 @@ public class User {
     private String lastName;
 
     @ManyToMany
+    @JsonManagedReference
     @JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles = new HashSet<>();
 
@@ -48,6 +52,7 @@ public class User {
 
     /**
      * Joins the user to a team.
+     *
      * @param team the team to join
      */
     public void joinTeam(Team team) {
@@ -70,6 +75,7 @@ public class User {
 
     /**
      * Checks if the user is part of a team.
+     *
      * @return true if the user is part of a team, false otherwise
      */
     public boolean isPartOfTeam() {
@@ -78,6 +84,7 @@ public class User {
 
     /**
      * Assigns a task to the user.
+     *
      * @param task the task to assign
      */
     public void assignTask(Task task) {
@@ -86,6 +93,7 @@ public class User {
 
     /**
      * Unassigns a task from the user.
+     *
      * @param task the task to unassign
      */
     public void unassignTask(Task task) {
@@ -96,6 +104,7 @@ public class User {
 
     /**
      * Checks if the user is assigned to a task.
+     *
      * @param task the task to check
      * @return true if the user is assigned to the task, false otherwise
      */
@@ -105,6 +114,7 @@ public class User {
 
     /**
      * Gets all tasks assigned to the user.
+     *
      * @param allTasks the set of all tasks
      * @return a set of tasks assigned to the user
      */

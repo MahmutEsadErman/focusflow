@@ -3,6 +3,7 @@ package org.focusflow.service;
 import org.focusflow.model.Role;
 import org.focusflow.model.Team;
 import org.focusflow.model.User;
+import org.focusflow.repository.RoleRepository;
 import org.focusflow.repository.UserRepository;
 import org.focusflow.service.impl.UserServiceImpl;
 import org.junit.jupiter.api.Test;
@@ -24,9 +25,12 @@ class UserServiceTest {
 
     @Mock
     private PasswordEncoder passwordEncoder;
-    
+
     @Mock
     private UserRepository userRepository;
+
+    @Mock
+    private RoleRepository roleRepository;
 
     @InjectMocks
     private UserServiceImpl userService;
@@ -41,6 +45,10 @@ class UserServiceTest {
 
         when(passwordEncoder.encode(anyString())).thenReturn("encodedPassword");
         when(userRepository.existsByEmail(email)).thenReturn(false);
+        Role userRole = new Role();
+        userRole.setId(1L);
+        userRole.setName("USER");
+        when(roleRepository.findByName("USER")).thenReturn(Optional.of(userRole));
         when(userRepository.save(any(User.class))).thenAnswer(invocation -> {
             User user = invocation.getArgument(0);
             user.setId(1L); // Simulate ID generation
@@ -71,7 +79,7 @@ class UserServiceTest {
 
         // Act & Assert
         assertThrows(IllegalArgumentException.class, () ->
-            userService.registerUser(invalidEmail, password, "John", "Doe")
+                userService.registerUser(invalidEmail, password, "John", "Doe")
         );
 
         verify(passwordEncoder, never()).encode(anyString());
@@ -89,7 +97,7 @@ class UserServiceTest {
 
         // Act & Assert
         assertThrows(IllegalArgumentException.class, () ->
-            userService.registerUser(email, password, "John", "Doe")
+                userService.registerUser(email, password, "John", "Doe")
         );
 
         verify(userRepository).existsByEmail(email);
@@ -106,9 +114,9 @@ class UserServiceTest {
 
         // Act & Assert
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () ->
-            userService.registerUser(email, nullPassword, "John", "Doe")
+                userService.registerUser(email, nullPassword, "John", "Doe")
         );
-        
+
         assertEquals("Password cannot be null", exception.getMessage());
         verify(passwordEncoder, never()).encode(anyString());
         verify(userRepository).existsByEmail(email);
@@ -125,9 +133,9 @@ class UserServiceTest {
 
         // Act & Assert
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () ->
-            userService.registerUser(email, shortPassword, "John", "Doe")
+                userService.registerUser(email, shortPassword, "John", "Doe")
         );
-        
+
         assertEquals("Password must be between 10 and 12 characters long", exception.getMessage());
         verify(passwordEncoder, never()).encode(anyString());
         verify(userRepository).existsByEmail(email);
@@ -144,9 +152,9 @@ class UserServiceTest {
 
         // Act & Assert
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () ->
-            userService.registerUser(email, longPassword, "John", "Doe")
+                userService.registerUser(email, longPassword, "John", "Doe")
         );
-        
+
         assertEquals("Password must be between 10 and 12 characters long", exception.getMessage());
         verify(passwordEncoder, never()).encode(anyString());
         verify(userRepository).existsByEmail(email);
@@ -163,9 +171,9 @@ class UserServiceTest {
 
         // Act & Assert
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () ->
-            userService.registerUser(email, noUppercase, "John", "Doe")
+                userService.registerUser(email, noUppercase, "John", "Doe")
         );
-        
+
         assertEquals("Password must contain at least one uppercase letter", exception.getMessage());
         verify(passwordEncoder, never()).encode(anyString());
         verify(userRepository).existsByEmail(email);
@@ -182,9 +190,9 @@ class UserServiceTest {
 
         // Act & Assert
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () ->
-            userService.registerUser(email, noLowercase, "John", "Doe")
+                userService.registerUser(email, noLowercase, "John", "Doe")
         );
-        
+
         assertEquals("Password must contain at least one lowercase letter", exception.getMessage());
         verify(passwordEncoder, never()).encode(anyString());
         verify(userRepository).existsByEmail(email);
@@ -201,9 +209,9 @@ class UserServiceTest {
 
         // Act & Assert
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () ->
-            userService.registerUser(email, noSpecialChar, "John", "Doe")
+                userService.registerUser(email, noSpecialChar, "John", "Doe")
         );
-        
+
         assertEquals("Password must contain at least one special character (!@#$%^&*)", exception.getMessage());
         verify(passwordEncoder, never()).encode(anyString());
         verify(userRepository).existsByEmail(email);
@@ -215,17 +223,17 @@ class UserServiceTest {
         // Arrange
         String email = "test@example.com";
         String password = "ValidPass12!";
-        
+
         User existingUser = new User();
         existingUser.setId(1L);
         existingUser.setEmail(email);
         existingUser.setPassword("encodedPassword");
         existingUser.setFirstName("John");
         existingUser.setLastName("Doe");
-        
+
         when(userRepository.findByEmail(email)).thenReturn(Optional.of(existingUser));
         when(passwordEncoder.matches(password, "encodedPassword")).thenReturn(true);
-        
+
         // Act
         User result = userService.login(email, password);
 
@@ -241,18 +249,18 @@ class UserServiceTest {
         // Arrange
         String email = "test@example.com";
         String password = "wrongpassword";
-        
+
         User existingUser = new User();
         existingUser.setId(1L);
         existingUser.setEmail(email);
         existingUser.setPassword("encodedPassword");
-        
+
         when(userRepository.findByEmail(email)).thenReturn(Optional.of(existingUser));
         when(passwordEncoder.matches(password, "encodedPassword")).thenReturn(false);
 
         // Act & Assert
         assertThrows(IllegalArgumentException.class, () ->
-            userService.login(email, password)
+                userService.login(email, password)
         );
 
         verify(passwordEncoder).matches(password, "encodedPassword");
@@ -264,12 +272,12 @@ class UserServiceTest {
         // Arrange
         String email = "nonexistent@example.com";
         String password = "ValidPass12!";
-        
+
         when(userRepository.findByEmail(email)).thenReturn(Optional.empty());
 
         // Act & Assert
         assertThrows(IllegalArgumentException.class, () ->
-            userService.login(email, password)
+                userService.login(email, password)
         );
 
         verify(userRepository).findByEmail(email);
@@ -281,11 +289,11 @@ class UserServiceTest {
         // Arrange
         Long userId = 1L;
         String roleName = "ADMIN";
-        
+
         User existingUser = new User();
         existingUser.setId(userId);
         existingUser.setEmail("test@example.com");
-        
+
         when(userRepository.findById(userId)).thenReturn(Optional.of(existingUser));
         when(userRepository.save(any(User.class))).thenReturn(existingUser);
 
@@ -303,12 +311,12 @@ class UserServiceTest {
         // Arrange
         Long userId = 999L;
         String roleName = "ADMIN";
-        
+
         when(userRepository.findById(userId)).thenReturn(Optional.empty());
 
         // Act & Assert
         assertThrows(IllegalArgumentException.class, () ->
-            userService.assignRole(userId, roleName)
+                userService.assignRole(userId, roleName)
         );
 
         verify(userRepository).findById(userId);
@@ -321,11 +329,11 @@ class UserServiceTest {
         User user = new User();
         user.setId(1L);
         user.setEmail("test@example.com");
-        
+
         Team team = new Team();
         team.setId(1L);
         team.setName("Test Team");
-        
+
         when(userRepository.save(any(User.class))).thenReturn(user);
 
         // Act
@@ -343,13 +351,13 @@ class UserServiceTest {
         User user = new User();
         user.setId(1L);
         user.setEmail("test@example.com");
-        
+
         Team team = new Team();
         team.setId(1L);
         team.setName("Test Team");
-        
+
         user.setTeam(team);
-        
+
         when(userRepository.save(any(User.class))).thenReturn(user);
 
         // Act
