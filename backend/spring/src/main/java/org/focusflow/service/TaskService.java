@@ -1,5 +1,6 @@
 package org.focusflow.service;
 
+import org.focusflow.exception.TaskException;
 import org.focusflow.model.Task;
 import org.focusflow.model.TaskPriority;
 import org.focusflow.model.TaskStatus;
@@ -21,6 +22,21 @@ public class TaskService {
     private UserService userService;
 
     public void createTask(String title, String longDescription, String shortDescription) {
+        // Validate title value
+        if (title == null || title.trim().isEmpty()) {
+            throw new TaskException("Task title cannot be empty");
+        }
+
+        // Validate longDescription value
+        if (longDescription == null || longDescription.trim().isEmpty()) {
+            throw new TaskException("Long description cannot be empty");
+        }
+
+        // Validate shortDescription value
+        if (shortDescription == null || shortDescription.trim().isEmpty()) {
+            throw new TaskException("Short description cannot be empty");
+        }
+
         Task task = new Task();
         User user = userService.login("test@test.de", "Password123!");
         task.assignUser(user);
@@ -34,10 +50,17 @@ public class TaskService {
     }
 
     public void deleteTask(Long id) {
+        if (!taskRepository.existsById(id)) {
+            throw new TaskException("Task not found with id: " + id);
+        }
         taskRepository.deleteById(id);
     }
 
     public List<Task> getAllTasks() {
-        return taskRepository.findAll();
+        List<Task> tasks = taskRepository.findAll();
+        if (tasks.isEmpty()) {
+            throw new TaskException("No tasks found");
+        }
+        return tasks;
     }
 }
