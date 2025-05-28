@@ -70,4 +70,33 @@ This request has 2 errors. "titl" should be "title" and "shortDescription" shoul
 
 ## Exercise 9.3
 
+When `docker-compose build` is run automatically tests are run too. Also in Intellij IDEA can be run manually. 
+
 ![All tests passed](./images/9.3.png)
+
+## Exercise 9.4
+
+- Apache JMeter 5.6.3
+- jmx files are under docs/jmx/
+
+## Test A: Constant Load
+
+- **Response Time (Avg)**: 526 ms
+- **Throughput**: 19.0 req/sec
+- **Error Rate**: 0.00%
+
+**Comment:**  
+The system handles constant traffic efficiently. Low response times and no errors indicate stable performance under predictable load.
+
+---
+
+## Test B: Spike Load
+
+- **Response Time (Avg)**: 4671 ms
+- **Throughput**: 14.6 req/sec
+- **Error Rate**: 7.63%
+
+**Comment:**  
+Spike load led to significantly higher response times and a noticeable error rate. This suggests performance degradation under sudden traffic surges. The system may require scaling improvements or optimizations to handle burst traffic.
+
+
