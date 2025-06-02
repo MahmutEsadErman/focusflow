@@ -33,7 +33,7 @@ public class TaskController {
         }
 
         try {
-            taskService.createTask(taskRequest.getTitle(), taskRequest.getLongDescription(), taskRequest.getShortDescription());
+            taskService.createTask(taskRequest.getTitle(), taskRequest.getLongDescription(), taskRequest.getShortDescription(), taskRequest.getDueDate());
             ApiResponse response = new ApiResponse(HttpStatus.CREATED.value(), "Task created successfully");
             return new ResponseEntity<>(response, HttpStatus.CREATED);
         } catch (TaskException te) {

@@ -17,8 +17,8 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http
-                .csrf(AbstractHttpConfigurer::disable) // CSRF deaktivieren
+        http.cors().and()
+                .csrf().disable()
                 .formLogin(AbstractHttpConfigurer::disable) // Login-Formular deaktivieren// 👈 wichtig: Standard Login-Seite deaktivieren
                 .httpBasic(AbstractHttpConfigurer::disable) // 👈 optional: auch Basic-Auth deaktivieren
                 .authorizeHttpRequests(auth -> auth

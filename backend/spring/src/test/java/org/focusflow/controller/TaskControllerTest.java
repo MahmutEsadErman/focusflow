@@ -54,12 +54,14 @@ public class TaskControllerTest {
         validTaskRequest.setTitle("A Valid Task Title"); 
         validTaskRequest.setShortDescription("Valid short description");
         validTaskRequest.setLongDescription("Valid long description for the task");
+        validTaskRequest.setDueDate(LocalDateTime.now());
 
         task1 = new Task();
         task1.setId(1L);
         task1.setTitle("Test Task 1");
         task1.setShortDescription("Short desc 1");
         task1.setLongDescription("Long desc 1");
+        task1.setDueDate(LocalDateTime.now());
     }
 
     // --- Test createTask --- 
@@ -67,7 +69,7 @@ public class TaskControllerTest {
     @Test
     void createTask_whenValidRequest_shouldReturnCreated() throws Exception {
         // Mocking the service call. Arguments to createTask in controller are: title, longDescription, shortDescription
-        doNothing().when(taskService).createTask(eq("A Valid Task Title"), eq("Valid long description for the task"), eq("Valid short description"));
+        doNothing().when(taskService).createTask(eq("A Valid Task Title"), eq("Valid long description for the task"), eq("Valid short description"), any(LocalDateTime.class));
 
         mockMvc.perform(post("/tasks/create")
                 .with(csrf())
@@ -78,8 +80,12 @@ public class TaskControllerTest {
                 .andExpect(jsonPath("$.message", is("Task created successfully")));
 
         // Verifying the service call. Arguments order: title, longDescription, shortDescription
-        verify(taskService, times(1)).createTask("A Valid Task Title", "Valid long description for the task", "Valid short description");
-    }
+        verify(taskService, times(1)).createTask(
+                eq("A Valid Task Title"),
+                eq("Valid long description for the task"),
+                eq("Valid short description"),
+                any(LocalDateTime.class)
+        );    }
 
     @Test
     void createTask_whenTitleMissing_shouldReturnBadRequest() throws Exception {
@@ -101,7 +107,7 @@ public class TaskControllerTest {
     @Test
     void createTask_whenServiceThrowsTaskException_shouldReturnBadRequest() throws Exception {
         doThrow(new TaskException("Service error during creation"))
-            .when(taskService).createTask(anyString(), anyString(), anyString());
+            .when(taskService).createTask(anyString(), anyString(), anyString(),  any(LocalDateTime.class));
 
         mockMvc.perform(post("/tasks/create")
                 .with(csrf())
@@ -184,6 +190,6 @@ public class TaskControllerTest {
                 .andReturn();
                 
         // Verify that taskService.createTask was NOT called because validation failed earlier
-        verify(taskService, never()).createTask(any(), any(), any());
+        verify(taskService, never()).createTask(any(), any(), any(),any());
     }
 } 

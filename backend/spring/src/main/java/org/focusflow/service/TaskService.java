@@ -21,7 +21,7 @@ public class TaskService {
     @Autowired
     private UserService userService;
 
-    public void createTask(String title, String longDescription, String shortDescription) {
+    public void createTask(String title, String longDescription, String shortDescription, LocalDateTime dueDate) {
         // Validate title value
         if (title == null || title.trim().isEmpty()) {
             throw new TaskException("Task title cannot be empty");
@@ -41,7 +41,7 @@ public class TaskService {
         User user = userService.login("test@test.de", "Password123!");
         task.assignUser(user);
         task.setTitle(title);
-        task.setDueDate(LocalDateTime.now());
+        task.setDueDate(dueDate);
         task.setLongDescription(longDescription);
         task.setShortDescription(shortDescription);
         task.setPriority(TaskPriority.HIGH);
@@ -57,10 +57,7 @@ public class TaskService {
     }
 
     public List<Task> getAllTasks() {
-        List<Task> tasks = taskRepository.findAll();
-        if (tasks.isEmpty()) {
-            throw new TaskException("No tasks found");
-        }
-        return tasks;
+       return taskRepository.findAll();
+
     }
 }
