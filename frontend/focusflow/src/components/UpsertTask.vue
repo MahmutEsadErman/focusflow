@@ -1,13 +1,20 @@
 <script setup>
 import {useTaskStore} from "@/stores/task.js";
+import { useToast } from "primevue/usetoast";
 
 const taskStore=useTaskStore();
 taskStore.initNewTask();
-
+const toast = useToast();
 const emit = defineEmits(['afterSave']);
 const saveTask = async () => {
   await taskStore.saveTask();
-  emit('afterSave');
+  if (taskStore.saveTaskError) {
+    toast.add({severity: 'error', summary: 'Error', detail: taskStore.saveTaskError.errors, life: 5000});
+  }
+  else{
+    emit('afterSave');
+  }
+
 
 }
 const formatDateTime=(value)=> {
@@ -48,6 +55,7 @@ const formatDateTime=(value)=> {
     </div>
   </template>
 </Card>
+  <Toast />
 </template>
 
 <style scoped>

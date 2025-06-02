@@ -9,7 +9,8 @@ export const useTaskStore = defineStore('task', {
       shortDescription:'',
       longDescription:'',
       dueDate:'',
-    }
+    },
+    saveTaskError: null,
   }),
   actions: {
     async getTasks() {
@@ -26,13 +27,20 @@ export const useTaskStore = defineStore('task', {
       }
     },
     async saveTask(){
-      const response = await fetch('http://localhost:8082/tasks/create', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(this.task),
-      })
+      this.saveTaskError = null
+
+        const response = await fetch('http://localhost:8082/tasks/create', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(this.task),
+        })
+
+     if (!response.ok) {
+       this.saveTaskError = await response.json()
+            }
+
       },
     async deleteTask(id){
       const response = await fetch(`http://localhost:8082/tasks/delete/${id}`, {
