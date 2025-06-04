@@ -23,7 +23,7 @@
     "@primevue/auto-import-resolver": "^4.3.4",
     "@vitejs/plugin-vue": "^5.2.3",
     "@vue/test-utils": "^2.4.6",
-    "cypress": "^14.2.1",
+    "cypress": "^14.4.1",
     "jsdom": "^26.0.0",
     "start-server-and-test": "^2.0.11",
     "unplugin-vue-components": "^28.7.0",

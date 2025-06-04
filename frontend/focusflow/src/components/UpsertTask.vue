@@ -29,15 +29,18 @@ const formatDateTime=(value)=> {
   <template #content>
     <div class="cardContent">
 <FloatLabel variant="on">
-  <InputText v-model="taskStore.task.title"></InputText>
+  <InputText v-model="taskStore.task.title"
+  data-testid="task-title-input" placeholder="Task Title"></InputText>
   <label for="title">Title</label>
 </FloatLabel>
     <FloatLabel  variant="on">
-      <InputText v-model="taskStore.task.shortDescription"></InputText>
+      <InputText v-model="taskStore.task.shortDescription"
+      data-testid="task-desc-input" placeholder="Short Description"></InputText>
       <label for="short">Short Description</label>
     </FloatLabel>
     <FloatLabel variant="on">
-      <Textarea v-model="taskStore.task.longDescription" cols="23" auto-resize></Textarea>
+      <Textarea v-model="taskStore.task.longDescription" cols="23" auto-resize
+      data-testid="task-long-desc-input" placeholder="Long Description"></Textarea>
       <label for="long">Long Description</label>
     </FloatLabel>
       <FloatLabel  variant="on">
@@ -48,10 +51,13 @@ const formatDateTime=(value)=> {
             hourFormat="24"
             showTime
             showSeconds
+            data-testid="task-due-input"
+            type="date"
         />
         <label for="dueDate">Due Date</label>
       </FloatLabel>
-      <Button @click="saveTask">Save Task</Button>
+      <Button @click="saveTask"
+      data-testid="submit-task-button" type="submit">Save Task</Button>
     </div>
   </template>
 </Card>

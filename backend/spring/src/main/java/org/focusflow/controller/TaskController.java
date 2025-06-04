@@ -19,21 +19,22 @@ import java.util.List;
 @RestController
 public class TaskController {
     private static final Logger logger = LoggerFactory.getLogger(TaskController.class);
-    
+
     @Autowired
     private TaskService taskService;
 
     @PostMapping("/create")
     public ResponseEntity<ApiResponse> createTask(@Valid @RequestBody TaskRequest taskRequest) {
         logger.debug("Received task request: {}", taskRequest);
-        
+
         if (taskRequest == null) {
             logger.error("Task request is unexpectedly null despite @RequestBody.");
             throw new TaskException("Task request cannot be null.");
         }
 
         try {
-            taskService.createTask(taskRequest.getTitle(), taskRequest.getLongDescription(), taskRequest.getShortDescription(), taskRequest.getDueDate());
+            taskService.createTask(taskRequest.getTitle(), taskRequest.getLongDescription(),
+                    taskRequest.getShortDescription(), taskRequest.getDueDate());
             ApiResponse response = new ApiResponse(HttpStatus.CREATED.value(), "Task created successfully");
             return new ResponseEntity<>(response, HttpStatus.CREATED);
         } catch (TaskException te) {
@@ -41,7 +42,8 @@ public class TaskController {
             throw te;
         } catch (Exception e) {
             logger.error("Unexpected error processing task request, wrapping in TaskException", e);
-            throw new TaskException("An unexpected error occurred while processing the task request: " + e.getMessage(), e);
+            throw new TaskException("An unexpected error occurred while processing the task request: " + e.getMessage(),
+                    e);
         }
     }
 
@@ -57,6 +59,7 @@ public class TaskController {
 
     @GetMapping("/list")
     public ResponseEntity<List<Task>> getAllTasks() {
+        System.out.println(">>> Listing tasks...");
         List<Task> tasks = taskService.getAllTasks();
         return ResponseEntity.ok(tasks);
     }
