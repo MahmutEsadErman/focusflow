@@ -21,7 +21,7 @@ public class TaskService {
     @Autowired
     private UserService userService;
 
-    public void createTask(String title, String longDescription, String shortDescription, LocalDateTime dueDate) {
+    public void createTask(String title, String longDescription, String shortDescription, LocalDateTime dueDate, String status) {
         // Validate title value
         if (title == null || title.trim().isEmpty()) {
             throw new TaskException("Task title cannot be empty");
@@ -44,8 +44,12 @@ public class TaskService {
         task.setDueDate(dueDate);
         task.setLongDescription(longDescription);
         task.setShortDescription(shortDescription);
-        task.setPriority(TaskPriority.HIGH);
-        task.setStatus(TaskStatus.OPEN);
+        try{
+            task.setStatus(TaskStatus.valueOf(status));
+        }
+        catch (IllegalArgumentException e){
+            throw new TaskException("Status must be one of: (OPEN,PENDING,IN_REVIEW,CLOSED)" );
+        }
         taskRepository.save(task);
     }
 
@@ -59,5 +63,38 @@ public class TaskService {
     public List<Task> getAllTasks() {
        return taskRepository.findAll();
 
+    }
+
+    public void updateTask (String title, String longDescription, String shortDescription, LocalDateTime dueDate, String status,Long id){
+
+        Task task = taskRepository.findById(id).orElseThrow(() -> new TaskException("Task not found with id: " + id));
+
+        if (title == null || title.trim().isEmpty()) {
+            throw new TaskException("Task title cannot be empty");
+        }
+
+        // Validate longDescription value
+        if (longDescription == null || longDescription.trim().isEmpty()) {
+            throw new TaskException("Long description cannot be empty");
+        }
+
+        // Validate shortDescription value
+        if (shortDescription == null || shortDescription.trim().isEmpty()) {
+            throw new TaskException("Short description cannot be empty");
+        }
+
+        User user = userService.login("test@test.de", "Password123!");
+        task.assignUser(user);
+        task.setTitle(title);
+        task.setDueDate(dueDate);
+        task.setLongDescription(longDescription);
+        task.setShortDescription(shortDescription);
+        try{
+            task.setStatus(TaskStatus.valueOf(status));
+        }
+        catch (IllegalArgumentException e){
+            throw new TaskException("Status must be one of: (OPEN,PENDING,IN_REVIEW,CLOSED)" );
+        }
+        taskRepository.save(task);
     }
 }

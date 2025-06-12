@@ -34,7 +34,7 @@ public class TaskController {
 
         try {
             taskService.createTask(taskRequest.getTitle(), taskRequest.getLongDescription(),
-                    taskRequest.getShortDescription(), taskRequest.getDueDate());
+                    taskRequest.getShortDescription(), taskRequest.getDueDate(),taskRequest.getStatus());
             ApiResponse response = new ApiResponse(HttpStatus.CREATED.value(), "Task created successfully");
             return new ResponseEntity<>(response, HttpStatus.CREATED);
         } catch (TaskException te) {
@@ -56,6 +56,13 @@ public class TaskController {
         ApiResponse response = new ApiResponse(HttpStatus.OK.value(), "Task deleted successfully");
         return ResponseEntity.ok(response);
     }
+@PutMapping("/update/{id}")
+public ResponseEntity<ApiResponse> updateTask(@Valid @RequestBody TaskRequest taskRequest,@PathVariable Long id) {
+        taskService.updateTask(taskRequest.getTitle(), taskRequest.getLongDescription(),
+            taskRequest.getShortDescription(), taskRequest.getDueDate(),taskRequest.getStatus(),id);
+        ApiResponse response = new ApiResponse(HttpStatus.OK.value(), "Task updated successfully");
+        return ResponseEntity.ok(response);
+}
 
     @GetMapping("/list")
     public ResponseEntity<List<Task>> getAllTasks() {

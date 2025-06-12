@@ -6,15 +6,16 @@ import UpsertTask from "@/components/UpsertTask.vue";
 const showUpsertWindow=ref()
 const taskStore=useTaskStore();
 taskStore.getTasks();
+taskStore.initNewTask();
 </script>
 
 <template>
-  <Button @click="showUpsertWindow=!showUpsertWindow">New Task</Button>
+  <Button data-testid="createTask" @click="showUpsertWindow=!showUpsertWindow">New Task</Button>
   <Dialog modal v-model:visible="showUpsertWindow">
     <template #header>
       <h2>Create Task</h2>
     </template>
     <UpsertTask @afterSave="taskStore.getTasks();showUpsertWindow=!showUpsertWindow"></UpsertTask>
   </Dialog>
-  <ListTasks :tasks="taskStore.tasks" @afterDeleteTask="taskStore.getTasks()"></ListTasks>
+  <ListTasks :tasks="taskStore.tasks" @afterDeleteTask="taskStore.getTasks()" @afterSave="taskStore.getTasks();"></ListTasks>
 </template>

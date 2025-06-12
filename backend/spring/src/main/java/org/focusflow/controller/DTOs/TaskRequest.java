@@ -26,6 +26,10 @@ public class TaskRequest {
     @JsonProperty("shortDescription")
     private String shortDescription;
 
+    @NotBlank(message="Status is required")
+    @JsonProperty("status")
+    private String status;
+
     @NotNull(message = "Due date is required")
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     @JsonProperty("dueDate")

@@ -5,6 +5,7 @@ import org.focusflow.controller.DTOs.ApiResponse;
 import org.focusflow.controller.DTOs.TaskRequest;
 import org.focusflow.exception.TaskException;
 import org.focusflow.model.Task;
+import org.focusflow.model.TaskStatus;
 import org.focusflow.service.TaskService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -55,6 +56,7 @@ public class TaskControllerTest {
         validTaskRequest.setShortDescription("Valid short description");
         validTaskRequest.setLongDescription("Valid long description for the task");
         validTaskRequest.setDueDate(LocalDateTime.now());
+        validTaskRequest.setStatus("OPEN");
 
         task1 = new Task();
         task1.setId(1L);
@@ -62,6 +64,7 @@ public class TaskControllerTest {
         task1.setShortDescription("Short desc 1");
         task1.setLongDescription("Long desc 1");
         task1.setDueDate(LocalDateTime.now());
+        task1.setStatus(TaskStatus.OPEN);
     }
 
     // --- Test createTask --- 
@@ -69,7 +72,7 @@ public class TaskControllerTest {
     @Test
     void createTask_whenValidRequest_shouldReturnCreated() throws Exception {
         // Mocking the service call. Arguments to createTask in controller are: title, longDescription, shortDescription
-        doNothing().when(taskService).createTask(eq("A Valid Task Title"), eq("Valid long description for the task"), eq("Valid short description"), any(LocalDateTime.class));
+        doNothing().when(taskService).createTask(eq("A Valid Task Title"), eq("Valid long description for the task"), eq("Valid short description"), any(LocalDateTime.class),eq("OPEN"));
 
         mockMvc.perform(post("/tasks/create")
                 .with(csrf())
@@ -84,7 +87,8 @@ public class TaskControllerTest {
                 eq("A Valid Task Title"),
                 eq("Valid long description for the task"),
                 eq("Valid short description"),
-                any(LocalDateTime.class)
+                any(LocalDateTime.class),
+                eq("OPEN")
         );    }
 
     @Test
@@ -107,7 +111,7 @@ public class TaskControllerTest {
     @Test
     void createTask_whenServiceThrowsTaskException_shouldReturnBadRequest() throws Exception {
         doThrow(new TaskException("Service error during creation"))
-            .when(taskService).createTask(anyString(), anyString(), anyString(),  any(LocalDateTime.class));
+            .when(taskService).createTask(anyString(), anyString(), anyString(),  any(LocalDateTime.class),anyString());
 
         mockMvc.perform(post("/tasks/create")
                 .with(csrf())
@@ -190,6 +194,6 @@ public class TaskControllerTest {
                 .andReturn();
                 
         // Verify that taskService.createTask was NOT called because validation failed earlier
-        verify(taskService, never()).createTask(any(), any(), any(),any());
+        verify(taskService, never()).createTask(any(), any(), any(),any(),any());
     }
 } 
