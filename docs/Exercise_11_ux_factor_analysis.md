@@ -40,7 +40,7 @@
 | “I’m in control.” or “I am the boss.”        | Controllability/Dependability        |
 | “I’ve never seen anything like this before.” | Originality or Novelty               |
 
-
+### 11.3
 
 | **UX Factor**       | **aImportance**   | **b. Design/Feature Support in FocusFlow** | **c. Risk if Ignored**                                                                        |
 
